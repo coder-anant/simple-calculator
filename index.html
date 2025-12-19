@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title>
+    <style>
+        /* CSS Styling */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f2f5;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        .calculator-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 20px rgba(0,0,0,0.1);
+            width: 320px;
+        }
+
+        #display {
+            width: 100%;
+            height: 60px;
+            background-color: #222;
+            color: #fff;
+            font-size: 2rem;
+            text-align: right;
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            padding: 20px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background-color: #e0e0e0;
+            transition: background-color 0.2s;
+        }
+
+        button:hover { background-color: #d4d4d4; }
+
+        .btn-operator {
+            background-color: #ff9f43;
+            color: white;
+        }
+        .btn-operator:hover { background-color: #ff8c1a; }
+
+        .btn-action {
+            background-color: #ff6b6b;
+            color: white;
+        }
+        .btn-action:hover { background-color: #ff5252; }
+
+        .btn-equal {
+            grid-row: span 2;
+            background-color: #1dd1a1;
+            color: white;
+        }
+        .btn-equal:hover { background-color: #10ac84; }
+
+        .btn-zero { grid-column: span 2; }
+    </style>
+</head>
+<body>
+
+    <div class="calculator-container">
+        <input type="text" id="display" disabled placeholder="0">
+
+        <div class="buttons">
+            <button class="btn-action" onclick="clearDisplay()">C</button>
+            <button class="btn-action" onclick="deleteLast()">DEL</button>
+            <button class="btn-operator" onclick="appendCharacter('/')">/</button>
+            <button class="btn-operator" onclick="appendCharacter('×')">×</button>
+
+            <button onclick="appendCharacter('7')">7</button>
+            <button onclick="appendCharacter('8')">8</button>
+            <button onclick="appendCharacter('9')">9</button>
+            <button class="btn-operator" onclick="appendCharacter('-')">-</button>
+
+            <button onclick="appendCharacter('4')">4</button>
+            <button onclick="appendCharacter('5')">5</button>
+            <button onclick="appendCharacter('6')">6</button>
+            <button class="btn-operator" onclick="appendCharacter('+')">+</button>
+
+            <button onclick="appendCharacter('1')">1</button>
+            <button onclick="appendCharacter('2')">2</button>
+            <button onclick="appendCharacter('3')">3</button>
+            <button class="btn-equal" onclick="calculateResult()">=</button>
+
+            <button class="btn-zero" onclick="appendCharacter('0')">0</button>
+            <button onclick="appendCharacter('.')">.</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript Logic
+        function appendCharacter(char) {
+            const display = document.getElementById('display');
+            display.value += char;
+        }
+
+        function clearDisplay() {
+            document.getElementById('display').value = '';
+        }
+
+        function deleteLast() {
+            const display = document.getElementById('display');
+            display.value = display.value.slice(0, -1);
+        }
+
+        function calculateResult() {
+            const display = document.getElementById('display');
+            try {
+                // 1. Get the current value from the screen
+                let expression = display.value;
+
+                // 2. Replace the visual '×' with the math symbol '*'
+                // The /×/g ensures we replace ALL occurrences
+                expression = expression.replace(/×/g, '*');
+
+                // 3. Calculate using the corrected expression
+                display.value = eval(expression);
+            } catch (error) {
+                display.value = 'Error';
+                setTimeout(() => clearDisplay(), 1500);
+            }
+        }
+    </script>
+</body>
+</html>
